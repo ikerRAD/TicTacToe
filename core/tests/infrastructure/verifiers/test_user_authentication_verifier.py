@@ -31,13 +31,13 @@ class TestUSerAuthenticationVerifier(TestCase):
 
     def test_verify(self) -> None:
         self.jwt_verifier.verify.return_value = {"user_id": 1}
-        self.user_repository.find_by_user_id.return_value = self.user
+        self.user_repository.find_by_id.return_value = self.user
 
         user = self.user_auth_verifier.verify(self.request)
 
         self.assertEqual(self.user, user)
         self.jwt_verifier.verify.assert_called_once_with("ey29...")
-        self.user_repository.find_by_user_id.assert_called_once_with(1)
+        self.user_repository.find_by_id.assert_called_once_with(1)
 
     def test_verify_no_token(self) -> None:
         self.request.META = {}
@@ -46,7 +46,7 @@ class TestUSerAuthenticationVerifier(TestCase):
             self.user_auth_verifier.verify(self.request)
 
         self.jwt_verifier.verify.assert_not_called()
-        self.user_repository.find_by_user_id.assert_not_called()
+        self.user_repository.find_by_id.assert_not_called()
 
     def test_verify_invalid_token(self) -> None:
         self.jwt_verifier.verify.side_effect = JWTVerificationException()
@@ -55,14 +55,14 @@ class TestUSerAuthenticationVerifier(TestCase):
             self.user_auth_verifier.verify(self.request)
 
         self.jwt_verifier.verify.assert_called_once_with("ey29...")
-        self.user_repository.find_by_user_id.assert_not_called()
+        self.user_repository.find_by_id.assert_not_called()
 
     def test_verify_no_user(self) -> None:
         self.jwt_verifier.verify.return_value = {"user_id": 2}
-        self.user_repository.find_by_user_id.return_value = None
+        self.user_repository.find_by_id.return_value = None
 
         with self.assertRaises(UserAuthenticationException):
             self.user_auth_verifier.verify(self.request)
 
         self.jwt_verifier.verify.assert_called_once_with("ey29...")
-        self.user_repository.find_by_user_id.assert_called_once_with(2)
+        self.user_repository.find_by_id.assert_called_once_with(2)
