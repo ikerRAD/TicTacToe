@@ -1,0 +1,2 @@
+class MatchNotAcceptingGuestsException(Exception):
+    pass
