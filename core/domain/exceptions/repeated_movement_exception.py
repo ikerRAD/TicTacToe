@@ -1,0 +1,2 @@
+class RepeatedMovementException(Exception):
+    pass

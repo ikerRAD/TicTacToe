@@ -1,0 +1,2 @@
+class InvalidTurnException(Exception):
+    pass

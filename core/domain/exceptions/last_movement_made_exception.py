@@ -1,0 +1,2 @@
+class LastMovementMadeException(Exception):
+    pass
