@@ -58,15 +58,15 @@ class PostUserView(APIView):
                 "username": openapi.Schema(
                     type=openapi.TYPE_STRING,
                     description="Username of the new user, it has to be unique",
-                    example="user1"
+                    example="user1",
                 ),
                 "password": openapi.Schema(
                     type=openapi.TYPE_STRING,
                     description="Password of the new user",
                     example="1234",
-                )
+                ),
             },
-            required=["username", "password"]
+            required=["username", "password"],
         ),
         responses={
             201: openapi.Response(
@@ -113,7 +113,9 @@ class PostUserView(APIView):
                 data.get("username"), data.get("password")
             )
         except UserAlreadyExistsException:
-            return JsonResponse({"error": "User already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(
+                {"error": "User already exists"}, status=status.HTTP_400_BAD_REQUEST
+            )
         except RegisterUserCommandInfo as info:
             access_token = self.__jwt_generator.generate(info.user)
             refresh_token = self.__jwt_generator.generate(info.user, refresh_token=True)
