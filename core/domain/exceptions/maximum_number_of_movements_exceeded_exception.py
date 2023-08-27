@@ -1,0 +1,2 @@
+class MaximumNumberOfMovementsExceededException(Exception):
+    pass

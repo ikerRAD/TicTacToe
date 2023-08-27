@@ -107,3 +107,55 @@ class TestIntegrationDbMatchRepository(TestCase):
             self.db_match_repository.save_guest(self.user, match.id)
 
         match.delete()
+
+    def test_end_match_with_winner(self) -> None:
+        match = Match(
+            first_player=self.user,
+            second_player=self.guest,
+            status=MatchStatuses.IN_PROGRESS,
+        )
+        match.save()
+
+        self.assertEqual(self.user, match.first_player)
+        self.assertEqual(self.guest, match.second_player)
+        self.assertEqual(MatchStatuses.IN_PROGRESS.value, match.status)
+        self.assertIsNone(match.winner)
+
+        self.db_match_repository.end_match(match.id, "first player")
+
+        match = Match.objects.get(id=match.id)
+
+        self.assertEqual(self.user, match.first_player)
+        self.assertEqual(self.guest, match.second_player)
+        self.assertEqual(MatchStatuses.FINISHED.value, match.status)
+        self.assertEqual(self.user, match.winner)
+
+        match.delete()
+
+    def test_end_match_without_winner(self) -> None:
+        match = Match(
+            first_player=self.user,
+            second_player=self.guest,
+            status=MatchStatuses.IN_PROGRESS,
+        )
+        match.save()
+
+        self.assertEqual(self.user, match.first_player)
+        self.assertEqual(self.guest, match.second_player)
+        self.assertEqual(MatchStatuses.IN_PROGRESS.value, match.status)
+        self.assertIsNone(match.winner)
+
+        self.db_match_repository.end_match(match.id, None)
+
+        match = Match.objects.get(id=match.id)
+
+        self.assertEqual(self.user, match.first_player)
+        self.assertEqual(self.guest, match.second_player)
+        self.assertEqual(MatchStatuses.FINISHED.value, match.status)
+        self.assertIsNone(match.winner)
+
+        match.delete()
+
+    def test_end_match_no_match(self) -> None:
+        with self.assertRaises(MatchNotFoundException):
+            self.db_match_repository.end_match(0, None)

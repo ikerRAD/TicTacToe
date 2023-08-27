@@ -1,3 +1,4 @@
+from typing import Optional
 from core.domain.exceptions.match_not_accepting_guests_exception import (
     MatchNotAcceptingGuestsException,
 )
@@ -13,6 +14,12 @@ class DbMatchRepository(MatchRepository):
 
     def __init__(self):
         self.__match_manager = Match.objects
+
+    def find_or_fail_by_id(self, match_id: int) -> Match:
+        try:
+            return self.__match_manager.get(id=match_id)
+        except Match.DoesNotExist:
+            raise MatchNotFoundException()
 
     def save(self, creator: User) -> Match:
         match = Match(first_player=creator)
@@ -41,3 +48,13 @@ class DbMatchRepository(MatchRepository):
 
         guest.matches_total = guest.matches_total + 1
         guest.save()
+
+    def end_match(self, match_id: int, winner: Optional[str]) -> None:
+        try:
+            match = self.__match_manager.get(id=match_id)
+        except Match.DoesNotExist:
+            raise MatchNotFoundException()
+
+        match.status = MatchStatuses.FINISHED
+        match.set_which_player_wins(winner)
+        match.save()

@@ -1,0 +1,2 @@
+class MatchNotAcceptingMovementsException(Exception):
+    pass
