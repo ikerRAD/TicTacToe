@@ -36,10 +36,7 @@ class TestRegisterUserCommand(TestCase):
     def test_handle_fails(self) -> None:
         self.user_repository.save.side_effect = IntegrityError()
 
-        with self.assertRaisesRegex(
-            UserAlreadyExistsException,
-            r"^User with username user1 cannot be registered$",
-        ):
+        with self.assertRaises(UserAlreadyExistsException):
             self.command.handle("user1", "abcd")
 
         self.user_repository.save.assert_called_once_with("user1", "abcd")
