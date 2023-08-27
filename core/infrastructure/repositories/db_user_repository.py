@@ -10,6 +10,12 @@ class DbUserRepository(UserRepository):
     def __init__(self):
         self.__user_manager = User.objects
 
+    def find_by_id(self, user_id: int) -> Optional[User]:
+        try:
+            return self.__user_manager.get(id=user_id)
+        except User.DoesNotExist:
+            return None
+
     def find_user_by_username(self, username: str) -> Optional[User]:
         try:
             return self.__user_manager.get(username=username)
