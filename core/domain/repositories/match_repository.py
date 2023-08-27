@@ -8,3 +8,7 @@ class MatchRepository(ABC):
     @abstractmethod
     def save(self, creator: User) -> Match:
         pass
+
+    @abstractmethod
+    def save_guest(self, guest: User, match_id: int) -> None:
+        pass
