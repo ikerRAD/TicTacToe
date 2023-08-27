@@ -3,7 +3,9 @@ from unittest.mock import Mock
 
 from core.application.login_user.login_user_command import LoginUserCommand
 from core.application.login_user.login_user_command_info import LoginUserCommandInfo
-from core.domain.exceptions.incorrect_user_password_exception import IncorrectUserPasswordException
+from core.domain.exceptions.incorrect_user_password_exception import (
+    IncorrectUserPasswordException,
+)
 from core.domain.exceptions.user_not_found_exception import UserNotFoundException
 from core.domain.models.user import User
 from core.domain.repositories.user_repository import UserRepository
