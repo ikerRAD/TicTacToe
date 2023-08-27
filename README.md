@@ -6,6 +6,8 @@ with a SQLite database.
 ## Contents
 
 - [Set up](#set-up-the-environment)
+- [Testing](#run-tests)
+- [API](#api-specification)
 
 ## Set up the environment
 
