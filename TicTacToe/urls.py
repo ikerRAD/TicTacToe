@@ -15,5 +15,9 @@ urlpatterns = [
     path("login/refresh/", PostRefreshView.as_view(), name="refresh_token"),
     path("matches/", PostMatchView.as_view(), name="create_match"),
     path("matches/<int:match_id>/join/", PostJoinView.as_view(), name="join_match"),
-    path("matches/<int:match_id>/movements/", PostMovementView.as_view(), name="make_movement"),
+    path(
+        "matches/<int:match_id>/movements/",
+        PostMovementView.as_view(),
+        name="make_movement",
+    ),
 ]
