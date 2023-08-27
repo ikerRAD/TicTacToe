@@ -24,6 +24,30 @@ class TestIntegrationDbMatchRepository(TestCase):
     def setUp(self) -> None:
         self.db_match_repository = DbMatchRepository()
 
+    def test_find_by_user_id(self) -> None:
+        match_created = Match.objects.create(first_player=self.user)
+        match_guest = Match.objects.create(second_player=self.user)
+
+        retrieved_matches = self.db_match_repository.find_by_user_id(self.user.id)
+
+        self.assertCountEqual([match_created, match_guest], list(retrieved_matches))
+
+        match_created.delete()
+        match_guest.delete()
+
+    def test_find_or_fail_by_id(self) -> None:
+        match = Match.objects.create(first_player=self.user)
+
+        retrieved_match = self.db_match_repository.find_or_fail_by_id(match.id)
+
+        self.assertEqual(match, retrieved_match)
+
+        match.delete()
+
+    def test_find_or_fail_by_id_fail(self) -> None:
+        with self.assertRaises(MatchNotFoundException):
+            self.db_match_repository.find_or_fail_by_id(0)
+
     def test_save(self) -> None:
         matches: list[Match] = list(Match.objects.all())
         self.assertEqual([], matches)

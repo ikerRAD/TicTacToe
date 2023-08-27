@@ -7,6 +7,10 @@ from core.domain.models.user import User
 
 class MatchRepository(ABC):
     @abstractmethod
+    def find_by_user_id(self, user_id: int) -> list[Match]:
+        pass
+
+    @abstractmethod
     def find_or_fail_by_id(self, match_id: int) -> Match:
         pass
 
