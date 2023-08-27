@@ -9,6 +9,21 @@ class TestIntegrationDbUserRepository(TestCase):
     def setUp(self) -> None:
         self.db_user_repository = DbUserRepository()
 
+    def test_find_user_by_id(self) -> None:
+        existing_user = User(id=1, username="user", password="123")
+        existing_user.save()
+
+        user = self.db_user_repository.find_by_id(1)
+
+        self.assertEquals(existing_user, user)
+
+        existing_user.delete()
+
+    def test_find_user_by_id_fails(self) -> None:
+        user = self.db_user_repository.find_by_id(0)
+
+        self.assertIsNone(user)
+
     def test_find_user_by_username(self) -> None:
         existing_user = User(username="user", password="123")
         existing_user.save()
