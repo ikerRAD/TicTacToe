@@ -19,7 +19,7 @@ class RefreshTokenCommand(Command):
 
         user_id = payload.get("user_id")
 
-        user = self.__user_repository.find_by_user_id(user_id)
+        user = self.__user_repository.find_by_id(user_id)
         if user is None:
             raise UserNotFoundException()
 

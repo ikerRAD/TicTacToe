@@ -23,7 +23,7 @@ class TestRefreshTokenCommand(TestCase):
 
     def test_handle(self) -> None:
         self.jwt_verifier.verify.return_value = {"user_id": 1}
-        self.user_repository.find_by_user_id.return_value = self.user
+        self.user_repository.find_by_id.return_value = self.user
 
         with self.assertRaises(RefreshTokenCommandInfo) as e:
             self.command.handle("access_token")
@@ -31,14 +31,14 @@ class TestRefreshTokenCommand(TestCase):
             self.assertEqual(self.user, e.user)
 
         self.jwt_verifier.verify.assert_called_once_with("access_token")
-        self.user_repository.find_by_user_id.assert_called_once_with(1)
+        self.user_repository.find_by_id.assert_called_once_with(1)
 
     def test_handle_no_user(self) -> None:
         self.jwt_verifier.verify.return_value = {"user_id": 5}
-        self.user_repository.find_by_user_id.return_value = None
+        self.user_repository.find_by_id.return_value = None
 
         with self.assertRaises(UserNotFoundException):
             self.command.handle("access_token")
 
         self.jwt_verifier.verify.assert_called_once_with("access_token")
-        self.user_repository.find_by_user_id.assert_called_once_with(5)
+        self.user_repository.find_by_id.assert_called_once_with(5)
