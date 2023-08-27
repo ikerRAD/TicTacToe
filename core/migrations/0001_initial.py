@@ -4,21 +4,50 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(help_text='Unique username for a player', max_length=30, unique=True)),
-                ('matches_total', models.PositiveIntegerField(default=0, help_text='Number of matches that the user has played')),
-                ('matches_won', models.PositiveIntegerField(default=0, help_text='Number of matches that the user has won')),
-                ('_password', models.CharField(help_text='Hashed password for the user', max_length=200)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        help_text="Unique username for a player",
+                        max_length=30,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "matches_total",
+                    models.PositiveIntegerField(
+                        default=0,
+                        help_text="Number of matches that the user has played",
+                    ),
+                ),
+                (
+                    "matches_won",
+                    models.PositiveIntegerField(
+                        default=0, help_text="Number of matches that the user has won"
+                    ),
+                ),
+                (
+                    "_password",
+                    models.CharField(
+                        help_text="Hashed password for the user", max_length=200
+                    ),
+                ),
             ],
         ),
     ]
